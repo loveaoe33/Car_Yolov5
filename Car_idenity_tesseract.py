@@ -28,7 +28,7 @@ model=torch.hub.load('ultralytics/yolov5', 'custom', path=model_path)
 labels = open('C:\\Users\\loveaoe33\\Desktop\\yolov5\\label.txt').read().strip().split('\n')
 cudnn.benchmark = True
 window.geometry("1000x1000")
-Car_Data_path="C:/Users/loveaoe33/Desktop/test"
+Car_Data_path="C:\\Users\\loveaoe33\\Desktop\\test"
 current_image_index=0
 Images=[]
 canvas_width=0
@@ -71,15 +71,20 @@ def show_image():
 
     '''image_Size=cv2.resize(image, (1024, 1024))'''
     image_Iden= model(image)
+    print (image_Iden.xyxy[0])
+
     label_frame = tk.Frame(canvas, bg='white')
     canvas.create_window(0, 0, anchor=tk.NW, window=label_frame, width=Image_width, height=Image_height)
-    for detection in image_Iden.xyxy[0]:
+
+    for detection in image_Iden.xyxy:
+        print("近來555555555555555")
+
         xmin, ymin, xmax, ymax, conf, cls = detection.tolist()
         label = labels[int(cls)]
         cv2.rectangle(image,(int(xmin), int(ymin)), (int(xmax), int(ymax)),  (0, 255, 0),1)
         cv2.putText(image, label, (int(xmin), int(ymin) - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 1)
         cropped_image =image[int(ymin):int(ymax),int(xmin):int(xmax)]
-        
+       
     image = cv2.resize(image, (Image_width, Image_height))
     image_pil=Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
      # 將PIL圖片轉換為Tkinter圖片
